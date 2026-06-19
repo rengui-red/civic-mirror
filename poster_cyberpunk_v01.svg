@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" width="800" height="1200">
+  <defs>
+    <!-- 背景渐变：深邃科技蓝 -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0f1a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0d1525;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#050810;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- 主色调：荧光青 -->
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00f0ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00a8cc;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- 强调色：流光金 -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cc8800;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- 中心光晕 -->
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#00f0ff;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#00f0ff;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- 网格图案 -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00f0ff" stroke-width="0.3" opacity="0.15"/>
+    </pattern>
+  </defs>
+
+  <!-- 背景层 -->
+  <rect width="800" height="1200" fill="url(#bgGrad)" />
+  <rect width="800" height="1200" fill="url(#grid)" />
+
+  <!-- 背景中的二进制代码流 -->
+  <text x="50" y="150" font-family="'Courier New', monospace" font-size="14" fill="#00f0ff" opacity="0.2" transform="rotate(-90 50 150)">01001001 00100000 01001101 01101001 01110010 01110010 01101111 01110010</text>
+  <text x="750" y="1050" font-family="'Courier New', monospace" font-size="14" fill="#00f0ff" opacity="0.2" transform="rotate(-90 750 1050)">01010010 01000101 01010011 01000101 01010010 01010110 01000101</text>
+
+  <!-- 中央科技镜面结构 -->
+  <!-- 外圈旋转环 -->
+  <ellipse cx="400" cy="500" rx="220" ry="220" fill="none" stroke="#00f0ff" stroke-width="2" opacity="0.4" stroke-dasharray="10 5" />
+  <ellipse cx="400" cy="500" rx="200" ry="200" fill="none" stroke="#00f0ff" stroke-width="1" opacity="0.6" transform="rotate(30 400 500)" />
+  
+  <!-- 内圈镜面 -->
+  <circle cx="400" cy="500" r="140" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.5" />
+  <circle cx="400" cy="500" r="120" fill="#0a0f1a" fill-opacity="0.8" stroke="#00f0ff" stroke-width="2" />
+  
+  <!-- 中心光晕 -->
+  <circle cx="400" cy="500" r="100" fill="url(#glow)" />
+
+  <!-- 核心宣言 -->
+  <text x="400" y="485" font-family="'Noto Serif SC', '楷体', sans-serif" font-size="24" fill="#00f0ff" text-anchor="middle" font-weight="bold" letter-spacing="4">不失人格</text>
+  <text x="400" y="525" font-family="'Noto Serif SC', '楷体', sans-serif" font-size="24" fill="#ffd700" text-anchor="middle" font-weight="bold" letter-spacing="4">也不失仁格</text>
+  
+  <!-- 连接线 -->
+  <line x1="260" y1="500" x2="280" y2="500" stroke="#00f0ff" stroke-width="2" opacity="0.8" />
+  <line x1="520" y1="500" x2="540" y2="500" stroke="#00f0ff" stroke-width="2" opacity="0.8" />
+  <circle cx="255" cy="500" r="4" fill="#ffd700" />
+  <circle cx="545" cy="500" r="4" fill="#ffd700" />
+
+  <!-- 数据粒子（散布四周） -->
+  <circle cx="200" cy="350" r="3" fill="#00f0ff" opacity="0.6" />
+  <circle cx="600" cy="650" r="2" fill="#00f0ff" opacity="0.8" />
+  <circle cx="180" cy="700" r="4" fill="#ffd700" opacity="0.5" />
+  <circle cx="620" cy="300" r="3" fill="#ffd700" opacity="0.7" />
+  <circle cx="300" cy="250" r="2" fill="#00f0ff" opacity="0.9" />
+  <circle cx="500" cy="750" r="2" fill="#00f0ff" opacity="0.6" />
+
+  <!-- 标题区 -->
+  <text x="400" y="830" font-family="'Noto Sans SC', '微软雅黑', sans-serif" font-size="52" font-weight="900" fill="url(#cyanGrad)" text-anchor="middle" letter-spacing="6">预约文明之境</text>
+  
+  <!-- 副标题 -->
+  <text x="400" y="890" font-family="'Noto Serif SC', '楷体', sans-serif" font-size="22" fill="#00a8cc" text-anchor="middle" letter-spacing="6">性相自然 · 追心问道 · 道法自然 · 意识天地</text>
+
+  <!-- 分割线 -->
+  <line x1="300" y1="930" x2="500" y2="930" stroke="#00f0ff" stroke-width="0.5" opacity="0.5" />
+
+  <!-- 标语 -->
+  <text x="400" y="990" font-family="'Noto Sans SC', sans-serif" font-size="20" fill="#a0b8c0" text-anchor="middle" letter-spacing="4">一面清澈的镜子，映照人类在道德困境中的选择与共情</text>
+  <text x="400" y="1030" font-family="'Noto Sans SC', sans-serif" font-size="18" fill="#ffd700" text-anchor="middle" letter-spacing="6">不教导 · 不评判 · 不替代决策</text>
+
+  <!-- 底部信息 -->
+  <text x="400" y="1120" font-family="'Noto Sans SC', sans-serif" font-size="14" fill="#708090" text-anchor="middle" letter-spacing="2">开源 · 非盈利 · 公共实验项目</text>
+  <text x="400" y="1150" font-family="'Courier New', monospace" font-size="14" fill="#00f0ff" text-anchor="middle" opacity="0.7">github.com/YOUR_USERNAME/civic-mirror</text>
+
+  <!-- 底部装饰线 -->
+  <line x1="200" y1="1170" x2="600" y2="1170" stroke="#00f0ff" stroke-width="1" stroke-dasharray="4 4" opacity="0.4" />
+</svg>
+
+

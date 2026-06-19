@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f4efe7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fefaf5;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#5e4b3a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3e362e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bgGrad)" />
+  <!-- 左侧大镜面 -->
+  <circle cx="480" cy="540" r="300" fill="none" stroke="#cfbea6" stroke-width="3" opacity="0.5" />
+  <circle cx="480" cy="540" r="240" fill="none" stroke="#b08968" stroke-width="3.5" opacity="0.35" />
+  <circle cx="480" cy="540" r="180" fill="#f9f3ea" fill-opacity="0.3" stroke="#8b6f50" stroke-width="0.5" />
+  <text x="480" y="520" font-family="'Noto Serif SC', '楷体', '宋体', serif" font-size="32" fill="#5e554b" text-anchor="middle" opacity="0.7">不失人格</text>
+  <text x="480" y="572" font-family="'Noto Serif SC', '楷体', '宋体', serif" font-size="32" fill="#5e554b" text-anchor="middle" opacity="0.7">也不失仁格</text>
+  <!-- 右侧文字 -->
+  <text x="1100" y="370" font-family="'Noto Serif SC', '楷体', '宋体', serif" font-size="72" font-weight="600" fill="url(#textGrad)" text-anchor="middle" letter-spacing="8">预约文明之境</text>
+  <text x="1100" y="450" font-family="'Noto Serif SC', '楷体', '宋体', serif" font-size="30" fill="#8b7b69" text-anchor="middle" letter-spacing="6">性相自然 · 追心问道 · 道法自然 · 意识天地</text>
+  <line x1="900" y1="510" x2="1300" y2="510" stroke="#cfbea6" stroke-width="1" />
+  <text x="1100" y="580" font-family="'Noto Serif SC', '楷体', '宋体', serif" font-size="24" fill="#7a6e60" text-anchor="middle" letter-spacing="3">一面清澈的镜子，映照人类在道德困境中的选择与共情</text>
+  <text x="1100" y="630" font-family="'Noto Serif SC', '楷体', '宋体', serif" font-size="24" fill="#7a6e60" text-anchor="middle" letter-spacing="3">不教导 · 不评判 · 不替代决策</text>
+  <text x="1100" y="720" font-family="'Noto Serif SC', '楷体', '宋体', serif" font-size="20" fill="#a89880" text-anchor="middle" letter-spacing="2">开源 · 非盈利 · 公共实验项目</text>
+  <text x="1100" y="770" font-family="'Noto Serif SC', '楷体', '宋体', serif" font-size="18" fill="#b8a58b" text-anchor="middle">github.com/YOUR_USERNAME/civic-mirror</text>
+  <!-- 底部装饰 -->
+  <line x1="600" y1="1000" x2="1320" y2="1000" stroke="#d9cebf" stroke-width="1.5" stroke-dasharray="6 6" />
+  <text x="960" y="1050" font-family="'Noto Serif SC', '楷体', '宋体', serif" font-size="16" fill="#b8a58b" text-anchor="middle" letter-spacing="3">留予时间审阅 · 寄予后来者考古</text>
+</svg>
