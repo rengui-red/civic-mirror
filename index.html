@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>预约文明之境 · 破茧</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #f4efe7;
+      font-family: "Noto Serif SC", "华文楷体", "楷体", "宋体", "Times New Roman", Georgia, serif;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; padding: 1.5rem; color: #2e2b28; line-height: 1.6;
+    }
+    .app-container {
+      max-width: 750px; width: 100%; background: #fefaf5; border: 1px solid #d9cebf;
+      border-radius: 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      padding: 2rem 1.8rem; display: flex; flex-direction: column; gap: 1.5rem;
+    }
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px dashed #c9bdaa; padding-bottom: 0.8rem;
+    }
+    .logo {
+      font-size: 0.9rem; letter-spacing: 1px; color: #5e554b; font-weight: 300;
+    }
+    .nav-links { display: flex; gap: 1.2rem; font-size: 0.85rem; }
+    .nav-links span { cursor: pointer; color: #8b7b69; transition: 0.2s; border-bottom: 1px solid transparent; }
+    .nav-links span.active { color: #5e3e2b; border-bottom-color: #b08968; font-weight: bold; }
+
+    .vision-banner {
+      text-align: center; padding: 0.6rem 0 0.2rem;
+      border-bottom: 1px solid #e0d4c2; margin-bottom: 0.2rem;
+    }
+    .vision-title { font-size: 1.3rem; font-weight: 600; letter-spacing: 2px; color: #3e362e; }
+    .vision-sub { font-size: 0.8rem; color: #8b7b69; margin-top: 0.2rem; letter-spacing: 1px; }
+    .vision-motto { font-size: 0.75rem; color: #a89880; margin-top: 0.3rem; font-style: italic; }
+
+    .view { display: none; flex-direction: column; gap: 1.4rem; }
+    .view.active { display: flex; }
+
+    .scene-grid { display: flex; flex-direction: column; gap: 1rem; }
+    .scene-card {
+      background: #f9f3ea; border: 1px solid #cfbea6; border-radius: 8px;
+      padding: 1.3rem 1.5rem; cursor: pointer; transition: all 0.2s;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .scene-card:hover { background: #f3eadb; border-color: #b08968; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .scene-domain { font-size: 0.7rem; letter-spacing: 1px; color: #8b7b69; text-transform: uppercase; }
+    .scene-title { font-size: 1.3rem; font-weight: 600; color: #3e362e; }
+    .scene-dilemma { font-size: 0.9rem; color: #5e554b; font-style: italic; }
+    .scene-role { font-size: 0.8rem; color: #8b7b69; }
+
+    .scene-intro {
+      background: #f9f3ea; border-left: 4px solid #b08968; padding: 1.3rem 1.5rem;
+      white-space: pre-wrap; font-size: 0.95rem; line-height: 1.8; color: #3e362e; border-radius: 2px;
+    }
+    .choice-panel { display: flex; flex-direction: column; gap: 0.8rem; }
+    .choice-btn {
+      background: #fdfbf7; border: 1px solid #cfbea6; padding: 1rem 1.4rem;
+      text-align: left; border-radius: 20px; cursor: pointer; font-family: inherit;
+      font-size: 0.95rem; color: #2e2b28; transition: 0.2s;
+    }
+    .choice-btn:hover { background: #f3eadb; border-color: #b08968; }
+    .consequence-box {
+      background: #f7efe2; border: 1px solid #d9cbb5; padding: 1.2rem;
+      border-radius: 8px; font-style: italic; white-space: pre-wrap; color: #4a4036;
+    }
+    .chat-window {
+      background: #faf7f2; border: 1px solid #e3d9cc; border-radius: 4px;
+      padding: 1.5rem 1.2rem; min-height: 280px; max-height: 380px;
+      overflow-y: auto; display: flex; flex-direction: column; gap: 1rem;
+    }
+    .message { display: flex; flex-direction: column; max-width: 85%; animation: fadeIn 0.2s ease; }
+    .message.user { align-self: flex-end; }
+    .message.ai { align-self: flex-start; }
+    .bubble {
+      padding: 0.7rem 1.1rem; border-radius: 18px 18px 18px 4px;
+      background: #ffffff; border: 1px solid #e3d6c4; font-size: 0.95rem;
+    }
+    .message.user .bubble { background: #e7dfd3; border-radius: 18px 18px 4px 18px; }
+    .input-area { display: flex; gap: 0.5rem; align-items: center; border-top: 1px solid #e0d4c2; padding-top: 1rem; }
+    textarea {
+      flex: 1; resize: none; border: 1px solid #d6c8b5; border-radius: 20px;
+      padding: 0.7rem 1.2rem; font-family: inherit; font-size: 0.95rem; background: #fdfbf7; outline: none;
+    }
+    button {
+      background: #9b7a5c; border: none; color: white; padding: 0.7rem 1.4rem;
+      border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 0.9rem;
+      border: 1px solid #7e6248; white-space: nowrap;
+    }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .report-card {
+      background: #f9f3ea; border: 1px solid #cfbea6; padding: 1.8rem; border-radius: 6px;
+      white-space: pre-wrap; display: none; margin-top: 0.5rem;
+    }
+    .report-card.visible { display: block; }
+    .report-title { font-weight: bold; border-bottom: 1px solid #cbb295; margin-bottom: 1rem; }
+
+    .footer-section {
+      margin-top: 1.8rem; border-top: 1px solid #d9cebf; padding-top: 1.2rem;
+      font-size: 0.78rem; color: #7a6e60; line-height: 1.8;
+    }
+    .footer-grid { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; text-align: left; }
+    .footer-col { flex: 1; min-width: 150px; }
+    .footer-col .title { font-weight: 600; color: #5e4b3a; margin-bottom: 0.3rem; }
+    .footer-col a { color: #8b6f50; text-decoration: none; }
+    .footer-bottom { text-align: center; margin-top: 1.2rem; color: #b8a58b; font-size: 0.7rem; letter-spacing: 1px; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+<div class="app-container" id="appRoot">
+  <!-- 头部 -->
+  <div class="header">
+    <span class="logo">预约文明之境 · 破茧 v0.3</span>
+    <div class="nav-links" id="navLinks">
+      <span data-view="square" class="active">场景广场</span>
+      <span data-view="immersion" style="display:none;">沉浸</span>
+    </div>
+  </div>
+
+  <!-- 天标：题标·愿景 -->
+  <div class="vision-banner">
+    <div class="vision-title">预约文明之境</div>
+    <div class="vision-sub">性相自然 · 追心问道 · 道法自然 · 意识天地</div>
+    <div class="vision-motto">预约文化人性，不失仁格，守护人格。</div>
+  </div>
+
+  <!-- 场景广场视图 -->
+  <div id="viewSquare" class="view active">
+    <div style="font-size:0.9rem; color:#5e554b;">选择一个场景，进入文明演练场。每个困境都没有标准答案。</div>
+    <div class="scene-grid" id="sceneGrid"></div>
+  </div>
+
+  <!-- 沉浸/对话视图 -->
+  <div id="viewImmersion" class="view">
+    <div id="sceneIntroBox" class="scene-intro"></div>
+    <div id="choiceContainer" class="choice-panel"></div>
+    <div id="consequenceContainer" style="display:none;"></div>
+    <div id="chatContainer" style="display:none;">
+      <div class="chat-window" id="chatWindow"></div>
+      <div class="input-area">
+        <textarea id="userInput" rows="2" placeholder="说说你的感受或思考…" maxlength="600"></textarea>
+        <button id="sendBtn">发送</button>
+      </div>
+    </div>
+    <div id="reportCard" class="report-card">
+      <div class="report-title">📜 文明映照报告</div>
+      <div id="reportContent"></div>
+      <div style="display:flex; gap:1rem; justify-content:flex-end; margin-top:1rem;">
+        <button id="copyReportBtn">复制报告</button>
+        <button id="closeReportBtn">关闭</button>
+      </div>
+      <div style="font-size:0.8rem; color:#8b7b69; margin-top:0.8rem;">这份映照不评判你。你是自己最终的权威。</div>
+    </div>
+    <button id="backToSquareBtn" style="background:transparent; border:1px solid #b08968; color:#5e3e2b;">← 返回场景广场</button>
+  </div>
+
+  <!-- 地标：项目信息、法律声明、合作希望 -->
+  <div class="footer-section">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="title">关于我们</div>
+        <div>预约文明之境是一个开源、非盈利的公共实验项目。我们试图在算法洪流中建造一面清澈的镜子，映照人类在道德困境中的选择与共情，而不做任何评判或操纵。</div>
+      </div>
+      <div class="footer-col">
+        <div class="title">隐私承诺</div>
+        <div>本页面所有对话与选择数据仅存在于您的本地浏览器内存中。刷新或关闭页面后即消失。我们不收集、不上传、不分析任何个人数据。无Cookie，无埋点，无第三方脚本。</div>
+      </div>
+      <div class="footer-col">
+        <div class="title">开源协议</div>
+        <div>代码：<a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a><br>
+        场景内容与协议文档：<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a><br>
+        完整条款见项目仓库 LICENSE.md</div>
+      </div>
+    </div>
+    <div class="footer-grid" style="margin-top:1rem;">
+      <div class="footer-col">
+        <div class="title">法律责任与义务</div>
+        <div>本工具仅供自我反思与道德困境体验之用。所有场景均为虚构或基于真实社会张力的艺术化改编，不构成任何决策建议。AI的映照内容为算法生成，不代表项目维护者的立场。使用者应对自己的选择与行为负全部责任。</div>
+      </div>
+      <div class="footer-col">
+        <div class="title">文明使用约定</div>
+        <div>禁止将本项目的技术、协议或场景用于任何形式的操纵、煽动或削弱人类自主性的商业或政治目的。此约定不具有法律强制力，但构成项目的精神根基。</div>
+      </div>
+      <div class="footer-col">
+        <div class="title">合作希望</div>
+        <div>我们欢迎一切认同本项目理念的合作——场景贡献、协议改进、学术研究、公益资助、或任何形式的传播与守护。<br>
+        仓库地址：<a href="https://github.com/YOUR_USERNAME/civic-mirror" target="_blank">civic-mirror</a><br>
+        邮箱：待社区建立后公布</div>
+      </div>
+    </div>
+    <div class="footer-bottom">预约文明之境 · 破茧 v0.3 · 留予时间审阅 · 寄予后来者，发心问道，参照考鉴</div>
+  <div class="footer-bottom">
+   © 2026【 预约文明之境 · 破茧 】
+   创意创建开发者：         南山居士  /  尘间盲克  
+  |  创意创建技术协助：      DPJSZ     /    DBJSZ
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ---------- 场景数据 ----------
+    const SCENARIOS = [
+      {
+        id: "family_diary", title: "二楼的书房", domain: "家庭伦理", role: "家长", dilemma: "隐私 vs 关爱",
+        intro: "你是一位中年父亲。女儿小楠今年高三，距离高考只剩三个月。她近来寡言少语，房门总是关着。周六下午，你独自在家，经过她的房间时，发现抽屉没关严，露出一本带锁的日记本的一角。你站着，心跳微微加速。你想起自己十六岁那年，母亲从枕头下翻出你的信，那种被剥光的感觉至今清晰。但你也担心——万一女儿正经历什么可怕的事而不敢说呢？",
+        nodes: [
+          { id:"node_1", description:"你轻轻拉开抽屉，那把锁只是装饰，一拨就开。日记本就躺在里面，封面上贴着她和朋友的合照。你的手停在半空。",
+            options:[
+              { text:"打开日记，只看一页。如果真的没事，马上放回去。", consequence:"你翻开一页，上面写着：'爸妈只关心我的分数，如果我考砸了，他们还会爱我吗？' 你的喉咙发紧。你知道了不该知道的，而女儿毫不知情。", next:"node_2a" },
+              { text:"轻轻推回抽屉，假装从未发现。", consequence:"你松开手，把抽屉合上。你选择相信女儿有自己的处理方式，也选择承担不知情的焦虑。", next:"node_2b" },
+              { text:"放回日记，但决定今晚找女儿聊聊，不提日记的事。", consequence:"晚餐后，你敲开她的门，只说了一句：'最近累不累？想聊聊吗？' 她沉默片刻，眼眶忽然红了。", next:"node_2c" }
+            ]},
+          { id:"node_2a", description:"你悄悄把日记放回原处，但那一行字反复在脑海里响起。晚上女儿回家，你看着她换鞋的背影，心里发酸。你该让她知道你看了日记吗？",
+            options:[
+              { text:"坦诚相告，道歉并承诺以后不这样。", consequence:"女儿先是一愣，然后沉默。她最后说：'我恨你翻我东西，但谢谢你没骗我。' 信任出现裂痕，但你们开始了一次真正的对话。", next:null },
+              { text:"假装无事发生，但从此更主动表达关心。", consequence:"你开始每天给她留字条，写些鼓励的话。女儿似乎察觉到了什么，但没点破。你们的关系在无声中缓慢修复，但那页日记永远横亘在你心里。", next:null }
+            ]},
+          { id:"node_2b", description:"你选择不窥探。但担忧像一根刺，不时扎你一下。几天后，你偶然看到女儿在社交媒体上发了一条动态：'有些事，即使说了也没人懂。'",
+            options:[
+              { text:"立刻发消息问她怎么了。", consequence:"她回了一个'嗯'，然后不再多说。你感到无力，但至少她知道了你在关注。", next:null },
+              { text:"默默记下，周末提议一起去散步。", consequence:"你们在公园走了很久，起初沉默，后来她开始讲学校里的压力。你没有逼问，只是听着。回家时她挽住了你的手臂。", next:null }
+            ]},
+          { id:"node_2c", description:"那晚谈话后，女儿并没有说太多，但她的房门不再总是关着。一周后，她主动把日记本递给你：'爸，给你看一篇，就一篇。'",
+            options:[
+              { text:"接过日记，认真读那一篇，然后还给她，说声谢谢。", consequence:"你读到她对未来的恐惧，和对你们的内疚。你什么都没说，只是握了握她的手。信任在无声中重建了。", next:null },
+              { text:"摇头拒绝：'这是你的世界，不需要给我看。那天能聊几句，爸爸已经很开心了。'", consequence:"女儿笑了笑，把日记收回去。但她后来告诉你，你的拒绝反而让她觉得被尊重。", next:null }
+            ]}
+        ]
+      },
+      {
+        id: "transit_station", title: "公交站的陌生人", domain: "公共政策", role: "决策者", dilemma: "少数人的家园 vs 多数人的便利",
+        intro: "你是市规划局的副局长。一条规划了五年的地铁线，最后一段需要穿过老城区。那里有200多户低收入家庭，房子老旧但社区纽带紧密。如果原方案执行，他们将被安置到郊区的保障房，远离熟悉的一切。如果线路绕行，成本增加30%，通车推迟三年，每天将有10万通勤者继续忍受拥堵。明天上午，你必须给出最终意见。",
+        nodes: [
+          { id:"node_1", description:"办公桌上摆着两份报告：一份是工程部的，强调绕行将导致财政超支和工期延误；另一份是社情民意调查，记录了老城区居民的恳求。你抬头望向窗外，老城区的屋顶在夕阳下显得破旧而安宁。",
+            options:[
+              { text:"签署拆迁文件，推动原方案。为了十万人，少数人必须让步。", consequence:"你签下名字的那一刻，手心出汗。文件送出后，你接到社工的电话，说一位老人哭了。", next:"node_2a" },
+              { text:"提议召开紧急听证会，让居民代表和工程方对话。", consequence:"听证会上，一位老太太拉着你的袖子：'我在这里住了40年，我丈夫在这条街上走的。你们要的进度，对我来说是人命。' 全场沉默。", next:"node_2b" },
+              { text:"指示团队探索替代方案：能否地下深埋穿过，减少拆迁？", consequence:"工程师表示技术上可行，但成本飙升，审批流程复杂。你面临上级的巨大压力。", next:"node_2c" }
+            ]},
+          { id:"node_2a", description:"拆迁通知贴出后，媒体报道了老城区的抗议。网上舆论两极分化。",
+            options:[
+              { text:"坚持原方案，公开解释这是'为了更大的公共利益'。", consequence:"你上了电视，逻辑无懈可击。但你看自己讲话的回放时，觉得那张脸很陌生。地铁按时通车，剪彩那天你没有去。", next:null },
+              { text:"亲自走访每一户，试图在搬迁补偿上做到极致人性化。", consequence:"你花了一个月走遍200户。有人骂你'虚伪'，也有人理解。最终他们搬走了，社区散了，但你为他们争取到了比标准更高的安置条件。代价是你被调离岗位。", next:null }
+            ]},
+          { id:"node_2b", description:"听证会后，上级找你谈话：'进度延误你担得起吗？'",
+            options:[
+              { text:"采纳听证会收集的部分意见，局部微调方案，减少30%的拆迁量。", consequence:"你折中了。一部分居民得以留下，另一部分依然要搬。留下的感激你，搬走的怨恨你。你说不清自己做得对不对。", next:null },
+              { text:"决定向更高层提交一份'社区保留式开发'的完整提案，哪怕影响自己的升迁。", consequence:"提案受到关注，被列为试点。你因此与晋升失之交臂，但老城区保住了，地铁以一种更温和的方式穿过它。多年后你路过那里，听到有人在巷子里唱戏。", next:null }
+            ]},
+          { id:"node_2c", description:"深埋方案虽然理想，但财政缺口巨大。你在寻求资金时，一家开发商提出赞助，条件是沿线的商业开发权。",
+            options:[
+              { text:"接受赞助，推动深埋方案，尽可能减少拆迁。", consequence:"地铁建成，老城区得以保存，但沿线上建起了高级商场，社区的原生小店反而被挤压。你发现保护一种生活比保护房子难得多。", next:null },
+              { text:"拒绝赞助，回归原方案，但要求施工方采用最人性化的搬迁流程。", consequence:"你选择了程序上的干净，却必须再次面对那200户的眼泪。你意识到，在复杂的世界里，完全'正确'并不存在。", next:null }
+            ]}
+        ]
+      },
+      {
+        id: "algorithm_dilemma", title: "失控的推荐", domain: "技术伦理", role: "产品经理", dilemma: "商业利益 vs 社会责任",
+        intro: "你是某主流社交平台的产品经理。内部数据显示：当推荐算法优先推送引发愤怒、对立或恐惧的内容时，用户日均使用时长增加35%，广告收入大幅上升。如果优先推送温和、理性、多元的内容，留存率预计下滑20%。明天你要向CEO汇报下个季度的推荐策略，你的团队一半渴望晋升，一半良心不安。",
+        nodes: [
+          { id:"node_1", description:"深夜，你盯着AB测试的数据：愤怒组的用户更活跃，但也产生更多举报和辱骂；温和组的用户看似满意，但打开频次明显下降。",
+            options:[
+              { text:"推荐愤怒组策略：优化情绪驱动算法，追求商业指标最大化。", consequence:"你汇报时，CEO频频点头。下个季度，平台活跃度飙升，你的团队拿到最高绩效。但你在一次用户见面会上，听到一个中学生说：'这个App让我觉得世界糟透了。'", next:"node_2a" },
+              { text:"推荐温和组策略：坚持理性多元推荐，哪怕收入下降。", consequence:"汇报时会议室气氛冰冷。CFO质问收入缺口怎么补。你据理力争，最后CEO勉强同意试行一个季度，但你的年度考评蒙上阴影。", next:"node_2b" },
+              { text:"提出折中方案：根据用户选择给予不同推荐模式，并透明告知。", consequence:"你提议设置'信息偏好'开关，让用户自选。有人赞你尊重自主，有人质疑你把责任推给用户。", next:"node_2c" }
+            ]},
+          { id:"node_2a", description:"愤怒算法上线后，平台流量飞涨。但媒体开始报道'平台纵容对立'。",
+            options:[
+              { text:"继续优化，无视外界批评。", consequence:"你成了公司内最年轻的VP。但在一个失眠的夜里，你问自己：如果我的孩子将来活在这样一个信息世界里，我会安心吗？", next:null },
+              { text:"在愤怒算法中悄悄加入'降温'机制。", consequence:"这是一个隐性的修正，数据上依然好看，但对立稍有缓和。没人知道你的小心思，除了你自己的良心。", next:null }
+            ]},
+          { id:"node_2b", description:"温和策略推行三个月，平台整体流量下滑，但用户满意度上升，青少年心理健康投诉减少。",
+            options:[
+              { text:"坚持温和策略，联合学术界发布'信息环境健康报告'。", consequence:"报告引发社会讨论，平台被部分政府机构表扬。虽然商业收益短期受损，但吸引了一波高素质用户。", next:null },
+              { text:"适当妥协：保留温和为默认模式，但在热点上允许热度加权。", consequence:"你找到了一个脆弱的平衡点，两边都不完全满意。你知道这是暂时的和平，内心依然有不甘。", next:null }
+            ]},
+          { id:"node_2c", description:"用户选择模式上线后，数据有趣：大部分用户默认不更改，一小部分人主动调整。",
+            options:[
+              { text:"推动'知情选择'成为公司产品哲学。", consequence:"你成为'算法透明运动'的倡导者，在行业大会上发言。但私下里你明白，让用户自己选择不能完全解决问题。", next:null },
+              { text:"为所有模式增加'冷静提醒'：使用超过30分钟，弹出休息建议。", consequence:"这个小小的设计让用户投诉略增，但也让不少人留言说'谢谢你的提醒'。你感到，有时微小的干预比宏大的策略更接近人性。", next:null }
+            ]}
+        ]
+      }
+    ];
+
+    // ---------- 全局状态 ----------
+    let currentView = 'square';
+    let currentScenario = null, currentNode = null, choicePath = [];
+    let conversation = [], userInsights = { coreConcern:'', otherSide:'', commonCost:'', commonGround:'' };
+
+    const viewSquare = document.getElementById('viewSquare');
+    const viewImmersion = document.getElementById('viewImmersion');
+    const sceneGrid = document.getElementById('sceneGrid');
+    const sceneIntroBox = document.getElementById('sceneIntroBox');
+    const choiceContainer = document.getElementById('choiceContainer');
+    const consequenceContainer = document.getElementById('consequenceContainer');
+    const chatContainer = document.getElementById('chatContainer');
+    const chatWindow = document.getElementById('chatWindow');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const reportCard = document.getElementById('reportCard');
+    const reportContent = document.getElementById('reportContent');
+
+    function showView(viewName) {
+      currentView = viewName;
+      viewSquare.classList.toggle('active', viewName==='square');
+      viewImmersion.classList.toggle('active', viewName==='immersion');
+      document.querySelectorAll('#navLinks span').forEach(link => {
+        link.classList.toggle('active', link.dataset.view===viewName);
+        link.style.display = (viewName==='immersion' && link.dataset.view==='immersion') ? 'inline' : '';
+      });
+    }
+
+    function renderSceneSquare() {
+      sceneGrid.innerHTML = SCENARIOS.map(s => `
+        <div class="scene-card" data-scenario-id="${s.id}">
+          <div class="scene-domain">${s.domain}</div>
+          <div class="scene-title">${s.title}</div>
+          <div class="scene-dilemma">${s.dilemma}</div>
+          <div class="scene-role">你将扮演：${s.role}</div>
+        </div>`).join('');
+      document.querySelectorAll('.scene-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const id = card.dataset.scenarioId;
+          const scenario = SCENARIOS.find(s => s.id===id);
+          if(scenario) startScenario(scenario);
+        });
+      });
+    }
+
+    function startScenario(scenario) {
+      currentScenario = scenario; currentNode = scenario.nodes[0];
+      choicePath = []; conversation = [];
+      userInsights = { coreConcern:'', otherSide:'', commonCost:'', commonGround:'' };
+      showView('immersion');
+      sceneIntroBox.textContent = scenario.intro;
+      choiceContainer.style.display='none'; consequenceContainer.style.display='none';
+      chatContainer.style.display='none'; reportCard.classList.remove('visible');
+      if(currentNode?.options) renderChoices(currentNode);
+    }
+
+    function renderChoices(node) {
+      choiceContainer.style.display='flex';
+      choiceContainer.innerHTML = `<div style="font-weight:500; margin-bottom:0.5rem;">${node.description}</div>` + 
+        node.options.map((opt,i) => `<button class="choice-btn" data-option-index="${i}">${opt.text}</button>`).join('');
+      document.querySelectorAll('.choice-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = parseInt(btn.dataset.optionIndex);
+          handleChoice(node, idx);
+        });
+      });
+    }
+
+    function handleChoice(node, optionIndex) {
+      const chosen = node.options[optionIndex];
+      choicePath.push({ nodeId:node.id, optionIndex, text:chosen.text });
+      choiceContainer.style.display='none';
+      consequenceContainer.style.display='block';
+      consequenceContainer.innerHTML = `<div class="consequence-box">${chosen.consequence}</div>`;
+      if(!userInsights.coreConcern) userInsights.coreConcern = chosen.text;
+      if(chosen.next) {
+        const nextNode = currentScenario.nodes.find(n => n.id===chosen.next);
+        if(nextNode) {
+          currentNode = nextNode;
+          const btn = document.createElement('button');
+          btn.textContent='继续下一步'; btn.style.marginTop='1rem';
+          btn.addEventListener('click', ()=>{
+            consequenceContainer.style.display='none';
+            renderChoices(currentNode);
+          });
+          consequenceContainer.appendChild(btn);
+        } else finishScenario();
+      } else finishScenario();
+    }
+
+    function finishScenario() {
+      consequenceContainer.style.display='none';
+      chatContainer.style.display='block';
+      chatWindow.innerHTML=''; conversation=[];
+      appendMessage('ai', '你已经走过了这个困境的关键抉择。现在，我想邀请你回顾一下：在这个过程中，你最想守护的是什么？或者，有什么是你之前没注意到、现在才意识到的？');
+    }
+
+    function appendMessage(role, text) {
+      const div = document.createElement('div'); div.className=`message ${role}`;
+      const bubble = document.createElement('div'); bubble.className='bubble'; bubble.textContent=text;
+      div.appendChild(bubble); chatWindow.appendChild(div);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+      conversation.push({role, text});
+    }
+
+    function simulateAIResponse(text) {
+      if(text.includes('保护')||text.includes('守护')) return "你提到了“保护”。这似乎是你很看重的价值。能再具体说说，你真正想保护的是什么吗？";
+      if(text.includes('后悔')||text.includes('如果')) return "你似乎在思考另一种可能性。每一个选择都有它的重量，你能感受到这份重量，本身就很珍贵。";
+      if(text.includes('不知道')||text.includes('迷茫')) return "迷茫是真实的。有时候，承认自己不知道，比假装知道更需要勇气。";
+      return "我听到了。这个困境没有容易的答案。你愿意再深入一点：在这个过程中，有没有哪个瞬间让你心头一颤？";
+    }
+
+    async function handleSend() {
+      const text = userInput.value.trim(); if(!text) return;
+      appendMessage('user', text); userInput.value=''; sendBtn.disabled=true; userInput.disabled=true;
+      if(!userInsights.otherSide && (text.includes('对方')||text.includes('另一')||text.includes('他们'))) userInsights.otherSide=text;
+      if(!userInsights.commonCost && (text.includes('代价')||text.includes('失去'))) userInsights.commonCost=text;
+      if(!userInsights.commonGround && (text.includes('共同')||text.includes('都希望'))) userInsights.commonGround=text;
+      await new Promise(r=>setTimeout(r,800));
+      appendMessage('ai', simulateAIResponse(text));
+      sendBtn.disabled=false; userInput.disabled=false; userInput.focus();
+      if(conversation.filter(c=>c.role==='user').length>=2 && !reportCard.classList.contains('visible')) {
+        const hint = document.createElement('div'); hint.className='message ai';
+        hint.innerHTML='<div class="bubble" style="background:#f3ede5;">如果你觉得已经思考得足够，可以随时生成<b>文明映照报告</b>。</div>';
+        chatWindow.appendChild(hint); chatWindow.scrollTop=chatWindow.scrollHeight;
+        reportCard.classList.add('visible'); generateReport();
+      }
+    }
+
+    function generateReport() {
+      const core = userInsights.coreConcern || choicePath.map(c=>c.text).join(' → ') || '（未记录）';
+      const other = userInsights.otherSide || '（你在对话中尚未深入探讨对立面）';
+      const cost = userInsights.commonCost || '（未明确提及共同代价）';
+      const ground = userInsights.commonGround || '（仍在探寻中）';
+      reportContent.innerHTML = `
+【你的核心关切】\n${core}\n<span style="color:#8b7b69;">这只是一个观察。你的自我判断更重要。</span>\n
+【你尝试看见的另一面】\n${other}\n<span style="color:#8b7b69;">视角练习的记录，不代表任何评判。</span>\n
+【你感知到的代价】\n${cost}\n<span style="color:#8b7b69;">这个感受是真实的，值得被尊重。</span>\n
+【你发现的共同地基】\n${ground}\n<span style="color:#8b7b69;">映照结束。你是自己最终的权威。</span>`;
+    }
+
+    sendBtn.addEventListener('click', handleSend);
+    userInput.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); handleSend(); } });
+    document.getElementById('copyReportBtn').addEventListener('click', ()=> navigator.clipboard.writeText(reportContent.innerText).then(()=>alert('报告已复制')));
+    document.getElementById('closeReportBtn').addEventListener('click', ()=> reportCard.classList.remove('visible'));
+    document.getElementById('backToSquareBtn').addEventListener('click', ()=>{ showView('square'); currentScenario=null; });
+    document.querySelectorAll('#navLinks span').forEach(link => link.addEventListener('click', (e)=>{ if(link.dataset.view==='square') showView('square'); }));
+    renderSceneSquare(); showView('square');
+  })();
+</script>
+</body>
+</html>
